@@ -10,11 +10,11 @@ project.ext {
     groupId = 'com.github.aakumykov'
 
     majorVersionCode = 1
-    minorVersionCode = 0
+    minorVersionCode = 1
     patchVersionCode = 0
     suffix = "alpha"
 
-    versionCode = 11
+    versionCode = 12
 
     versionName = majorVersionCode + "." + minorVersionCode + "." + patchVersionCode + "-" + suffix
 }
@@ -52,7 +52,7 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.core:core-ktx:1.13.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
 
     testImplementation 'junit:junit:4.13.2'

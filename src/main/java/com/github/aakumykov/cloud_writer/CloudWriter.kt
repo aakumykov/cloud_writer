@@ -60,7 +60,6 @@ interface CloudWriter {
 
     companion object {
         const val DS = "/"
-        const val ARG_NAME_AUTH_TOKEN = "AUTH_TOKEN_ARG"
 
         fun composeFullPath(basePath: String, fileName: String): String {
             return "${basePath}${DS}${fileName}".stripMultiSlashes()

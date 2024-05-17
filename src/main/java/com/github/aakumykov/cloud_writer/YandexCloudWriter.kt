@@ -3,8 +3,6 @@ package com.github.aakumykov.cloud_writer
 import android.util.Log
 import com.google.gson.Gson
 import com.yandex.disk.rest.json.Link
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
@@ -20,10 +18,10 @@ import java.io.IOException
 import java.io.InputStream
 import java.util.concurrent.TimeUnit
 
-class YandexCloudWriter @AssistedInject constructor(
+class YandexCloudWriter constructor(
     private val okHttpClient: OkHttpClient,
     private val gson: Gson,
-    @Assisted private val authToken: String
+    private val authToken: String
 ) : CloudWriter
 {
     private val defaultMediaType: MediaType get() = DEFAULT_MEDIA_TYPE.toMediaType()

@@ -51,6 +51,23 @@ class LocalCloudWriter constructor(
         }
     }
 
+    override fun putFile(
+        inputStream: InputStream,
+        targetPath: String,
+        callback: CountingOutputStream.Callback,
+        overwriteIfExists: Boolean
+    ) {
+        val targetFile = File(targetPath)
+        if (targetFile.exists() && !overwriteIfExists)
+            return
+
+        File(targetPath).outputStream().use { os ->
+            inputStream.copyTo(
+                CountingOutputStream(os, callback)
+            )
+        }
+    }
+
 
     override fun fileExists(parentDirName: String, childName: String): Boolean {
         return File(parentDirName, childName).exists()

@@ -124,6 +124,45 @@ class YandexCloudWriter constructor(
     }
 
 
+    override fun putFile(
+        inputStream: InputStream,
+        targetPath: String,
+        callback: CountingOutputStream.Callback,
+        overwriteIfExists: Boolean
+    ) {
+
+    }
+
+
+    @Throws(IOException::class, CloudWriter.OperationUnsuccessfulException::class)
+    private fun putFileAsStreamReal(inputStream: InputStream, uploadURL: String) {
+
+        val requestBody: RequestBody = object: RequestBody() {
+
+            override fun contentType(): MediaType = defaultMediaType
+
+            override fun writeTo(sink: BufferedSink) {
+                inputStream.copyTo(sink.outputStream())
+            }
+        }
+
+        performUploadRequest(requestBody, uploadURL)
+    }
+
+
+    private fun performUploadRequest(requestBody: RequestBody, uploadURL: String) {
+
+        val fileUploadRequest = Request.Builder()
+            .put(requestBody)
+            .url(uploadURL)
+            .build()
+
+        okHttpClient.newCall(fileUploadRequest).execute().use { response ->
+            if (!response.isSuccessful) throw unsuccessfulResponseException(response)
+        }
+    }
+
+
     @Throws(IOException::class, CloudWriter.OperationUnsuccessfulException::class)
     override fun fileExists(parentDirName: String, childName: String): Boolean {
 
@@ -272,34 +311,6 @@ class YandexCloudWriter constructor(
         val requestBody: RequestBody = file.asRequestBody(defaultMediaType)
 
         performUploadRequest(requestBody, uploadURL)
-    }
-
-    @Throws(IOException::class, CloudWriter.OperationUnsuccessfulException::class)
-    private fun putFileAsStreamReal(inputStream: InputStream, uploadURL: String) {
-
-        val requestBody: RequestBody = object: RequestBody() {
-
-            override fun contentType(): MediaType = defaultMediaType
-
-            override fun writeTo(sink: BufferedSink) {
-                inputStream.copyTo(sink.outputStream())
-            }
-        }
-
-        performUploadRequest(requestBody, uploadURL)
-    }
-
-
-    private fun performUploadRequest(requestBody: RequestBody, uploadURL: String) {
-
-        val fileUploadRequest = Request.Builder()
-            .put(requestBody)
-            .url(uploadURL)
-            .build()
-
-        okHttpClient.newCall(fileUploadRequest).execute().use { response ->
-            if (!response.isSuccessful) throw unsuccessfulResponseException(response)
-        }
     }
 
 

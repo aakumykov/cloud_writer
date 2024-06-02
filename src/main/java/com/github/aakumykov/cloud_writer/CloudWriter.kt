@@ -28,6 +28,12 @@ interface CloudWriter {
     @Throws(IOException::class, OperationUnsuccessfulException::class)
     fun putFile(inputStream: InputStream, targetPath: String, overwriteIfExists: Boolean = false)
 
+    @Throws(IOException::class, OperationUnsuccessfulException::class)
+    fun putFile(inputStream: InputStream,
+                targetPath: String,
+                callback: CountingOutputStream.Callback,
+                overwriteIfExists: Boolean = false)
+
 
     // TODO: не нужна
     // FIXME: добавить аннотацию в реализации

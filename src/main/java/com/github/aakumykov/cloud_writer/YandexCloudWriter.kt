@@ -130,7 +130,7 @@ class YandexCloudWriter constructor(
         callback: CountingOutputStream.Callback,
         overwriteIfExists: Boolean
     ) {
-
+        Log.d(TAG, "putFile()")
     }
 
 

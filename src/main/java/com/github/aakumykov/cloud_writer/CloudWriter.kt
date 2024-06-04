@@ -3,6 +3,7 @@ package com.github.aakumykov.cloud_writer
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
+import java.io.OutputStream
 
 // TODO: suspend-методы
 // TODO: возвращать Result вместо выборса исключений

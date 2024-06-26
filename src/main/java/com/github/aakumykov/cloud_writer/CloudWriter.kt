@@ -46,6 +46,16 @@ interface CloudWriter {
     )
     fun deleteFile(basePath: String, fileName: String)
 
+
+    @Throws(
+        IOException::class,
+        OperationUnsuccessfulException::class,
+        OperationTimeoutException::class
+    )
+    // TODO: удаление в копзину/полное
+    fun deleteDirRecursively(basePath: String, dirName: String)
+
+
     // TODO: выделить в отдельный файл...
     sealed class CloudWriterException(message: String) : Exception(message)
 

@@ -1,5 +1,7 @@
 package com.github.aakumykov.cloud_writer
 
+import com.github.aakumykov.cloud_writer.CloudWriter.OperationTimeoutException
+import com.github.aakumykov.cloud_writer.CloudWriter.OperationUnsuccessfulException
 import com.github.aakumykov.cloud_writer.extensions.copyTo
 import java.io.File
 import java.io.FileNotFoundException
@@ -67,10 +69,28 @@ class LocalCloudWriter constructor(
 
         with(File(path)) {
             if (!exists())
-                throw FileNotFoundException(path)
+                throw FileNotFoundException(path) // FIXME: осмысленное сообщение
 
             if (!delete())
-                throw UnsupportedOperationException("File '$path' was not deleted.")
+                throw UnsupportedOperationException("File '$path' was not deleted.") // FIXME: OperationUnsuccessfulException
+        }
+    }
+
+    @Throws(
+        IOException::class,
+        OperationUnsuccessfulException::class,
+        OperationTimeoutException::class
+    )
+    override fun deleteDirRecursively(basePath: String, dirName: String) {
+
+        val path = CloudWriter.composeFullPath(basePath, dirName)
+
+        with(File(path)) {
+            if (!exists())
+                throw FileNotFoundException("Dir not found: $path")
+
+            if (!deleteRecursively())
+                throw OperationUnsuccessfulException("Dir was not deleted recursively: $path")
         }
     }
 

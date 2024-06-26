@@ -180,11 +180,27 @@ class YandexCloudWriter constructor(
 
                 timeElapsed += OPERATION_WAITING_STEP_MILLIS
 
-                if (timeElapsed > OPERATION_WAITING_TIMEOUT_MILLIS)
+                if (timeElapsed > FILE_OPERATION_WAITING_TIMEOUT_MILLIS)
                     throw CloudWriter.OperationTimeoutException("Deletion of file '${CloudWriter.composeFullPath(basePath, fileName)}' is timed out. Maybe it is really deleted.")
             }
 
             Log.d(TAG, "... операция удаления завершена (${hashCode()}).")
+        }
+    }
+
+    override fun deleteDirRecursively(basePath: String, dirName: String) {
+        var timeElapsed = 0L
+        try {
+            deleteFileSimple(basePath, dirName)
+        }
+        catch (e: IndeterminateOperationException) {
+            while(!operationIsFinished(e.operationStatusLink)) {
+                TimeUnit.MILLISECONDS.sleep(OPERATION_WAITING_STEP_MILLIS)
+                timeElapsed += OPERATION_WAITING_STEP_MILLIS
+                if (timeElapsed > DIR_OPERATION_WAITING_TIMEOUT_MILLIS)
+                    throw CloudWriter.OperationTimeoutException("Deletion of file '${CloudWriter.composeFullPath(basePath, dirName)}' is timed out. Maybe it is really deleted.")
+
+            }
         }
     }
 
@@ -319,7 +335,8 @@ class YandexCloudWriter constructor(
         val TAG: String = YandexCloudWriter::class.java.simpleName
 
         const val OPERATION_WAITING_STEP_MILLIS = 100L
-        const val OPERATION_WAITING_TIMEOUT_MILLIS = 30_000L
+        const val FILE_OPERATION_WAITING_TIMEOUT_MILLIS = 30_000L
+        const val DIR_OPERATION_WAITING_TIMEOUT_MILLIS = 30_000L
 
         private const val DISK_BASE_URL = "https://cloud-api.yandex.net/v1/disk"
         private const val RESOURCES_BASE_URL = "${DISK_BASE_URL}/resources"

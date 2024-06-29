@@ -18,12 +18,12 @@ import java.io.IOException
 import java.io.InputStream
 import java.util.concurrent.TimeUnit
 
-class YandexCloudWriter constructor(
-    private val okHttpClient: OkHttpClient,
-    private val gson: Gson,
-    private val authToken: String
-) : CloudWriter
-{
+class YandexCloudWriter(
+    private val authToken: String,
+    private val okHttpClient: OkHttpClient = OkHttpClient.Builder().build(),
+    private val gson: Gson = Gson()
+) : CloudWriter {
+
     private val defaultMediaType: MediaType get() = DEFAULT_MEDIA_TYPE.toMediaType()
 
     // TODO: проверить с разными аргументами

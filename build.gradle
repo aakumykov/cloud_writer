@@ -59,6 +59,8 @@ dependencies {
 
     api 'com.squareup.okhttp3:okhttp:4.12.0'
 
+    api 'com.google.code.gson:gson:2.11.0'
+
     api 'com.yandex.android:disk-restapi-sdk:1.03'
 }
 

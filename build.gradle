@@ -8,14 +8,14 @@ project.ext {
     artifactId = 'cloud_writer'
     groupId = 'com.github.aakumykov'
 
-    majorVersionCode = 1
-    minorVersionCode = 2
-    patchVersionCode = 0
-    suffix = "alpha"
+    majorVersionNum = commonMajorVersionNumber
+    minorVersionNum = commonMinorVersionNumber
+    patchVersionNum = commonPatchVersionNumber
+    suffix = commonVersionSuffix
 
-    versionCode = 12
+    versionCode = commonVersionCode
 
-    versionName = majorVersionCode + "." + minorVersionCode + "." + patchVersionCode + "-" + suffix
+    versionName = majorVersionNum + "." + minorVersionNum + "." + patchVersionNum + "-" + suffix
 }
 
 android {
